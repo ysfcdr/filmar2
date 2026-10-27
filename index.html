@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filmar - Film Arşivi</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen font-sans">
+
+    <!-- Header / Navbar -->
+    <header class="border-b border-zinc-800 bg-zinc-900/50 backdrop-blur sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex items-center justify-between">
+            <h1 class="text-2xl font-black tracking-wider text-red-500">FILMAR</h1>
+            <input type="text" id="searchInput" placeholder="Film ara..." 
+                class="bg-zinc-800 border border-zinc-700 px-4 py-2 rounded-lg text-sm focus:outline-none focus:border-red-500 w-64">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 py-8">
+        <div id="movieGrid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+            <!-- Filmler buraya dinamik olarak gelecek -->
+        </div>
+    </main>
+
+    <script>
+        // Örnek film verileri (İstediğin gibi çoğaltabilir veya değiştirebilirsin)
+        const movies = [
+            { title: "Örümcek-Adam: Örümcek Evreninde", year: "2018", poster: "https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg" },
+            { title: "Yıldızlararası", year: "2014", poster: "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg" },
+            { title: "The Dark Knight", year: "2008", poster: "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg" },
+            { title: "Avengers: Endgame", year: "2019", poster: "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg" }
+        ];
+
+        const movieGrid = document.getElementById('movieGrid');
+        const searchInput = document.getElementById('searchInput');
+
+        function displayMovies(list) {
+            movieGrid.innerHTML = '';
+            if (list.length === 0) {
+                movieGrid.innerHTML = '<p class="col-span-full text-center text-zinc-500 py-12">Film bulunamadı.</p>';
+                return;
+            }
+            list.forEach(movie => {
+                const card = `
+                    <div class="bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden hover:border-red-500/50 transition duration-300 flex flex-col">
+                        <img src="${movie.poster}" alt="${movie.title}" class="w-full h-72 object-cover">
+                        <div class="p-4 flex flex-col flex-grow justify-between">
+                            <h3 class="font-bold text-sm line-clamp-1">${movie.title}</h3>
+                            <span class="text-xs text-zinc-400 mt-2">${movie.year}</span>
+                        </div>
+                    </div>
+                `;
+                movieGrid.innerHTML += card;
+            });
+        }
+
+        // İlk yükleme
+        displayMovies(movies);
+
+        // Arama filtreleme
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const filtered = movies.filter(m => m.title.toLowerCase().includes(term));
+            displayMovies(filtered);
+        });
+    </script>
+</body>
+</html>
